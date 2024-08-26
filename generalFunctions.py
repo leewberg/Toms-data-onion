@@ -29,7 +29,7 @@ def toBinary (tekst):
     return binary
 
 def saveToFile(data:str, filepath:str) -> None:
-    f = open(filepath, "a")
+    f = open(filepath, "w")
     f.write(data)
     f.close()
     return None

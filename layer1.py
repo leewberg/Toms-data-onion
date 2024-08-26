@@ -1,20 +1,19 @@
 import base64
-import math as m
 import generalFunctions as gF
-from time import time
 
-l = open("ASCII85layertext/layer1.txt", "r", encoding="UTF-8") #det man får når man har dekryptert det på nettsiden
+layer = 1
+
+l = open("ASCII85layertext/layer1.txt", "r", encoding="UTF-8") 
 layerOne = l.read()
 decrypt = base64.a85decode(layerOne, adobe=True)
-#print(decrypt)
+
+#create a list of every single byte rewritten as a string with a length of 8
 binary =  []
 for b in decrypt:
     binary.append('{:0>8b}'.format((b)))
-#print(len(binary))
-#print((binary[0]))
 
-start = time()
 
+#flip every second bit
 for x in binary:
     j = binary.index(x)
     temp = ""
@@ -30,19 +29,12 @@ for x in binary:
         i+=1
     binary[j] = temp
 
-#print(binary[0])
-slutt = time()
-print(f"dette tok {slutt-start} sekunder")
-#tar ca 5-12 min
 
+#rotate to the right
 for j in range (len(binary)):
     last = binary[j][-1]
     adding = (binary[j][:-1])
-    if last == "1":
-        binary[j] = "1{}".format(adding)
-    elif last == "0":
-        binary[j] = "0{}".format(adding)
-#print(binary)
+    binary[j] = last+adding
 
 
 for i in range(len(binary)):
@@ -51,14 +43,10 @@ for i in range(len(binary)):
         now = binary[i][j]
         temp+=int(now)*2**(7-j)
     binary[i] = temp
-#print(binary[0])
 
 
-bro = ""
+payload = ""
 for i in range (len(binary)):
-    bro = bro + chr(binary[i])
-#print(bro)
+    payload = payload + chr(binary[i])
 
-
-for i in range (len(binary)):
-    binary[i] = int(binary[i])
+gF.savePayload(payload, layer)
