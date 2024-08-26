@@ -14,6 +14,7 @@ for b in decrypt:
 
 
 #flip every second bit
+#this takes insaneliy long. i will make it better once i've finished the whole puzzle. go make a cup of coffee while this runs
 for x in binary:
     j = binary.index(x)
     temp = ""
@@ -49,4 +50,4 @@ payload = ""
 for i in range (len(binary)):
     payload = payload + chr(binary[i])
 
-gF.savePayload(payload, layer)
+gF.savePayload(payload, layer+1)
