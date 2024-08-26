@@ -27,3 +27,24 @@ def toBinary (tekst):
     for b in tekst:
         binary.append('{:0>8b}'.format((b)))
     return binary
+
+def saveToFile(data:str, filepath:str) -> None:
+    f = open(filepath, "a")
+    f.write(data)
+    f.close()
+    return None
+
+def savePayload(payload:str, layernumber:int) -> None:
+    pl = ""
+    instruction = payload[0]
+    plStart = 0
+    for i in range(2, len(payload)):
+        if payload[i-1] == "<" and payload[i] == "~":
+            plStart = i - 1
+            break
+    
+    instruction = payload[:plStart]
+    print(instruction)
+
+    pl = payload[plStart:]
+    saveToFile(pl, "ASCII85layertext/layer"+str(layernumber)+".txt")
